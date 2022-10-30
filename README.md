@@ -10,3 +10,4 @@ $ love .
 
 - <https://love2d.org/>
 - <https://github.com/adekto/maid64>
+- <https://love2d.org/forums/viewtopic.php?t=82034>
