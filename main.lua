@@ -33,7 +33,6 @@ function love.draw()
   love.graphics.draw(gradient,x,0)
   love.graphics.draw(gradient,x,0)
   love.graphics.draw(gradient,x-W,0)
-  love.graphics.print("Hello World!", 0, 0)
   love.graphics.draw(mire,144,112,rotate,1,1,32,32)
 
   maid64.finish()
@@ -41,4 +40,11 @@ end
 
 function love.resize(w, h)
   maid64.resize(w,h)
+end
+
+function love.keypressed(key, scancode, isrepeat)
+  if key == "return" and love.keyboard.isDown('lalt') then
+    fullscreen = not fullscreen
+    love.window.setFullscreen(fullscreen, "desktop")
+  end
 end
