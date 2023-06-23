@@ -3,7 +3,7 @@ Learning how to render on scaled low resolutions with LÖVE.
 ## How to start
 
 ```
-$ love .
+$ make
 ```
 
 ## Rationale

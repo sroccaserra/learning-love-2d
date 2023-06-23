@@ -1,48 +1,80 @@
-local maid64 = require 'maid64'
+local love = love
+local gfx = love.graphics
 
-local rotate
-local mire
-local gradient
-local x
-local W = 288
-local H = 224
+local fullscreen = false
+
+local canvas
+local canvas_w = 288
+local canvas_h = 224
+local canvas_x, canvas_y
+
 local K = 4
+local scaler
+
+local sheet
+local spr_1
+local spr_2
+local x, y
 
 function love.load()
-  love.window.setMode(W*K, H*K, {resizable=true, vsync=false, minwidth=200, minheight=200})
+  love.mouse.setVisible(false)
 
-  maid64.setup(W,H)
+  local window_w = canvas_w*K
+  local window_h = canvas_h*K
+  love.window.setMode(window_w, window_h, {resizable=true, vsync=false, minwidth=200, minheight=200})
 
-  mire = maid64.newImage("mire.png")
-  gradient = maid64.newImage("gradient.png")
-  rotate = 0
-  x = 0
+  if canvas_w < canvas_h then
+    scaler = window_h / canvas_h
+  else
+    scaler = window_w / canvas_w
+  end
+
+  canvas_x = window_w/2 - scaler*canvas_w/2
+  canvas_y = window_h/2 - scaler*canvas_h/2
+  canvas = gfx.newCanvas(canvas_w, canvas_h)
+  canvas:setFilter('nearest')
+
+  sheet = gfx.newImage('assets/sheet.png')
+  sheet:setFilter('nearest')
+  spr_1 = gfx.newQuad(0, 0, 8, 8, sheet)
+  spr_2 = gfx.newQuad(8, 0, 8, 8, sheet)
+
+  x = 10
+  y = 10
 end
 
-function love.update(dt)
-  rotate = rotate + dt
-  x = x + dt*60
-  if x >= W then
-    x = x - W
-  end
+function love.update(_dt)
+  local mouse_x = math.floor((love.mouse.getX() - canvas_x) /
+  (scaler * canvas_w) * canvas_w)
+  local mouse_y = math.floor((love.mouse.getY() - canvas_y) /
+  (scaler * canvas_h) * canvas_h)
+
+  x = mouse_x
+  y = mouse_y
 end
 
 function love.draw()
-  maid64.start()
+  gfx.setCanvas(canvas)
+  gfx.clear()
 
-  love.graphics.draw(gradient,x,0)
-  love.graphics.draw(gradient,x,0)
-  love.graphics.draw(gradient,x-W,0)
-  love.graphics.draw(mire,144,112,rotate,1,1,32,32)
+  gfx.draw(sheet, spr_1, x, y)
+  gfx.draw(sheet, spr_2, 50, 60)
 
-  maid64.finish()
+  gfx.setCanvas()
+  gfx.draw(canvas, canvas_x, canvas_y, 0, scaler)
 end
 
 function love.resize(w, h)
-  maid64.resize(w,h)
+  if h/canvas_h < w/canvas_w then
+    scaler = h / canvas_h
+  else
+    scaler = w / canvas_w
+  end
+  canvas_x = w/2 - (scaler * (canvas_w/2))
+  canvas_y = h/2 - (scaler * (canvas_h/2))
 end
 
-function love.keypressed(key, scancode, isrepeat)
+function love.keypressed(key, _scancode, _isrepeat)
   if key == "return" and love.keyboard.isDown('lalt') then
     fullscreen = not fullscreen
     love.window.setFullscreen(fullscreen, "desktop")
