@@ -59,9 +59,9 @@ function love.draw()
   gfx.setCanvas(canvas)
   gfx.clear()
 
-  gfx.draw(sheet, spr_pointer, x, y)
   gfx.draw(sheet, spr_1, canvas_w/2-4, canvas_h/2-4)
   gfx.draw(sheet, spr_2, 50, 60)
+  gfx.draw(sheet, spr_pointer, x, y)
 
   gfx.setCanvas()
   gfx.draw(canvas, canvas_x, canvas_y, 0, scaler)
