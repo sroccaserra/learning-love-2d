@@ -14,6 +14,7 @@ local scaler
 local sheet
 local spr_1
 local spr_2
+local spr_pointer
 local x, y
 
 function love.load()
@@ -36,8 +37,9 @@ function love.load()
 
   sheet = gfx.newImage('assets/sheet.png')
   sheet:setFilter('nearest')
-  spr_1 = gfx.newQuad(0, 0, 8, 8, sheet)
-  spr_2 = gfx.newQuad(8, 0, 8, 8, sheet)
+  spr_1 = gfx.newQuad(16, 0, 8, 8, sheet)
+  spr_2 = gfx.newQuad(24, 0, 8, 8, sheet)
+  spr_pointer = gfx.newQuad(0, 0, 16, 16, sheet)
 
   x = 10
   y = 10
@@ -57,7 +59,8 @@ function love.draw()
   gfx.setCanvas(canvas)
   gfx.clear()
 
-  gfx.draw(sheet, spr_1, x, y)
+  gfx.draw(sheet, spr_pointer, x, y)
+  gfx.draw(sheet, spr_1, canvas_w/2-4, canvas_h/2-4)
   gfx.draw(sheet, spr_2, 50, 60)
 
   gfx.setCanvas()
