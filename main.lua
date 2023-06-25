@@ -55,11 +55,19 @@ function love.update(_dt)
   y = mouse_y
 end
 
+local function draw_background()
+  for i=0,(canvas_h/8-1) do
+    for j=0,(canvas_w/8-1) do
+      gfx.draw(sheet, spr_1, j*8, i*8)
+    end
+  end
+end
+
 function love.draw()
   gfx.setCanvas(canvas)
   gfx.clear()
 
-  gfx.draw(sheet, spr_1, canvas_w/2-4, canvas_h/2-4)
+  draw_background()
   gfx.draw(sheet, spr_2, 50, 60)
   gfx.draw(sheet, spr_pointer, x, y)
 
